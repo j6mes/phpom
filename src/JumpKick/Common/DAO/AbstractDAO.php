@@ -6,6 +6,7 @@ abstract class AbstractDAO implements DAO {
 	private $isPersisted = false;
 	private $isUpdatePending = false;
 
+	protected $data;
 	
 	public function __construct($isPersisted) {
 		$this->isPersisted = $isPersisted;
@@ -19,13 +20,33 @@ abstract class AbstractDAO implements DAO {
 		return $this->isUpdatePending;
 	}
 	
+	public function set($field,$value) {
+		$this->data[$field] = $value;
+		$this->setChanged();
+	}
+	
+	public function get($field) {
+		return $this->data[$field];
+	}
+	
+	
+	
+	public function load($data) {
+		if(is_array($array)) {
+			foreach($array as $key=>$value) {
+				$this->data[$key] = $value;
+			}
+		}
+		$this->setChanged();
+	}
+	
+	
 	protected function setChanged() {
 		$this->isUpdatePending = true; 
 		$this->onChangeHook();
 	}
 	
 	protected function commit() {
-	
 		if(!$this->isUpdatePending()) {
 			return;
 		}
@@ -70,4 +91,5 @@ abstract class AbstractDAO implements DAO {
 	protected function update() {
 		//Do nothing here
 	}
+	
 }

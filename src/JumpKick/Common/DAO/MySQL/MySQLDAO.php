@@ -7,20 +7,34 @@ require_once("JumpKick\Common\Autoload.php");
 
 
 
-class MySQLDAO extends AbstractDAO {
+abstract class MySQLDAO extends AbstractDAO {
 	
 	protected $isContentLoaded;
-	protected $id; 
+	protected $id;
 	
-	public function __construct($id) {
-		parent::__construct($true);
-		
-		$this->id = $id;
-		$this->isContentLoaded = false;
+	public function __construct($id=null) {
+		if($id == null) {
+			parent::__construct(false);
+		} else {
+			parent::__construct(true);
+			
+			$this->id = $id;
+			$this->isContentLoaded = false;
+		}
 	}
 	
+	
+	
 	protected function create() {
+		$query = "INSERT INTO `" . $this->getTableName() . "` (";
+		$query .= implode(",", array_map(function($key) { return "`{$key}`";}, array_keys($this->data)));
+		$query .=") VALUES (";
+		$query .= implode(",", array_map(function() {return "?";}, $this->data)); 
+		$query .= ");";
 		
+		$statement = $this->dbh->prepare($query);
+		$statement->execute($this->data);
+		echo $query;
 	}
 	
 	protected function update() {
@@ -30,14 +44,13 @@ class MySQLDAO extends AbstractDAO {
 	protected function onChangeHook() {
 		
 	}
+
+	protected function fieldNameFor($field) {
+		return "field";
 	
-	protected void 
-	
-	public function test() {
-		$this->setChanged();
-		$this->commit();
 	}
+	
+	protected abstract function getTableName();
+
 }
 
-$a  = new MySQLDAO(false);
-$a->test();
