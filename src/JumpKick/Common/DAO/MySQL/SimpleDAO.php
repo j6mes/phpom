@@ -13,7 +13,7 @@ class SimpleDAO extends MySQLDAO {
 	}
 	
 	protected function getTableName () {
-		return "test table";
+		return "test";
 	}
 	
 }

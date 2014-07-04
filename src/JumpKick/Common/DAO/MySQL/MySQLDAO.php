@@ -6,11 +6,11 @@ use JumpKick\Common\DAO\AbstractDAO;
 require_once("JumpKick\Common\Autoload.php");
 
 
-
 abstract class MySQLDAO extends AbstractDAO {
 	
 	protected $isContentLoaded;
 	protected $id;
+	protected $dbh;
 	
 	public function __construct($id=null) {
 		if($id == null) {
@@ -21,6 +21,8 @@ abstract class MySQLDAO extends AbstractDAO {
 			$this->id = $id;
 			$this->isContentLoaded = false;
 		}
+		
+		$this->dbh = MySQLDatabaseConnection::getActiveConnection();
 	}
 	
 	
@@ -33,12 +35,13 @@ abstract class MySQLDAO extends AbstractDAO {
 		$query .= ");";
 		
 		$statement = $this->dbh->prepare($query);
-		$statement->execute($this->data);
-		echo $query;
+		$statement->execute(array_values($this->data));
+		
+		print_r($statement->errorInfo());
 	}
 	
 	protected function update() {
-		
+
 	}
 	
 	protected function onChangeHook() {
