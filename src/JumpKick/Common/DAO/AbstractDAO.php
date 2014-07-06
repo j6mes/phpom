@@ -32,8 +32,8 @@ abstract class AbstractDAO implements DAO {
 	
 	
 	public function load($data) {
-		if(is_array($array)) {
-			foreach($array as $key=>$value) {
+		if(is_array($data)) {
+			foreach($data as $key=>$value) {
 				$this->data[$key] = $value;
 			}
 		}
@@ -46,7 +46,7 @@ abstract class AbstractDAO implements DAO {
 		$this->onChangeHook();
 	}
 	
-	protected function commit() {
+	public function commit() {
 		if(!$this->isUpdatePending()) {
 			return;
 		}

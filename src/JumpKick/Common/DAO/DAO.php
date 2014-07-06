@@ -11,4 +11,6 @@ interface DAO {
 	
 	function load($data);
 	
+	function commit();
+	
 }
