@@ -6,13 +6,10 @@ use JumpKick\Common\DAO\AbstractDAO;
 require_once("JumpKick\Common\Autoload.php");
 
 
-abstract class MySQLDAO extends AbstractDAO {
+abstract class MySQLDAO extends AbstractDAO implements Identity {
 	
 	protected $isContentLoaded;
-	
-	protected $idcol;
 	protected $id;
-	
 	protected $dbh;
 	
 	public function __construct($id=null) {
@@ -46,7 +43,7 @@ abstract class MySQLDAO extends AbstractDAO {
 	protected function update() {
 		$query = "UPDATE `" . $this->getTableName() . "` SET";
 		$query .= implode(",", array_map(function($key) { return "`{$key}`=?";}, array_keys($this->data)));
-		$query = "WHERE `{$this->idcol}` = ? LIMIT 1;"
+		$query = "WHERE `{$this->getIdentityColumn()}` = ? LIMIT 1;"
 		
 		$statement = $this->dbh->prepare($query);
 		
@@ -63,7 +60,7 @@ abstract class MySQLDAO extends AbstractDAO {
 	
 	}
 	
-	protected abstract function getTableName();
+	
 
 }
 
