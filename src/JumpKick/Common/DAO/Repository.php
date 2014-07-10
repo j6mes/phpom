@@ -1,4 +1,5 @@
 <?php
+
 namespace JumpKick\Common\DAO;
 require_once("JumpKick\Common\Autoload.php");
 
