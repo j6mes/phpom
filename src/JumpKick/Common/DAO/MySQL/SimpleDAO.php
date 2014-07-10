@@ -12,9 +12,7 @@ class SimpleDAO extends MySQLDAO {
 		$this->commit();
 	}
 	
-	protected function getTableName () {
-		return "test";
-	}
+	
 	
 }
 
@@ -23,4 +21,3 @@ class SimpleDAO extends MySQLDAO {
 	
 $a  = new SimpleDAO();
 $a->test();
-	
