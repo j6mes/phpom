@@ -1,6 +1,11 @@
 <?php
 
-namespace JumpKick\Common\DAO\MySQL
+namespace JumpKick\Common\DAO\MySQL;
+use JumpKick\Common\DAO\Repository;
+use JumpKick\Common\DAO\Identity;
+use \PDO;
+require_once ("JumpKick\Common\Autoload.php");
+
 
 abstract class MySQLRepository implements Repository, Identity {
 	private $dbh;
@@ -49,10 +54,10 @@ abstract class MySQLRepository implements Repository, Identity {
 	function find($id) {
 		$query = "SELECT * FROM `{$this->getTableName()}` WHERE `{$this->getIdentityColumn()}` = ?;";
 		$smt = $this->dbh->prepare($query);
-		$smt->execute(arary($id));
+		$smt->execute(array($id));
 		
 		$result = $smt->fetch(PDO::FETCH_ASSOC);
-		$returnResult = $this->initRow($row);	
+		$returnResult = $this->initRow($result);	
 		
 		return $returnResult;
 	}

@@ -2,7 +2,9 @@
 namespace JumpKick\Common\DAO;
 require_once("JumpKick\Common\Autoload.php");
 
+
 abstract class AbstractDAO implements DAO {
+	
 	private $isPersisted = false;
 	private $isUpdatePending = false;
 
@@ -31,6 +33,12 @@ abstract class AbstractDAO implements DAO {
 	
 	
 	
+	public function init($data) {
+		$this->isPersisted = true;
+		$this->load($data);
+	}
+	
+	
 	public function load($data) {
 		if(is_array($data)) {
 			foreach($data as $key=>$value) {
@@ -47,6 +55,7 @@ abstract class AbstractDAO implements DAO {
 	}
 	
 	public function commit() {
+		
 		if(!$this->isUpdatePending()) {
 			return;
 		}
@@ -80,8 +89,10 @@ abstract class AbstractDAO implements DAO {
 		//Do nothing here
 	}
 	
-	protected function onCommitHook() { 
-		//Do nothing here
+	protected function onCommitHook() {
+		$this->isPersisted = true; 
+		$this->isUpdatePending = false;
+		
 	}
 	
 	protected function create() {
@@ -93,3 +104,4 @@ abstract class AbstractDAO implements DAO {
 	}
 	
 }
+

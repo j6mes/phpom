@@ -9,8 +9,9 @@ interface DAO {
 	function set($field,$value);
 	function get($field);
 	
+	function init($data);
 	function load($data);
 	
 	function commit();
 	
-}
+}	
