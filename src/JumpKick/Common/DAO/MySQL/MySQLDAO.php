@@ -70,9 +70,5 @@ abstract class MySQLDAO extends AbstractDAO implements Identity {
 
 	}
 
-	protected function fieldNameFor($field) {
-		return "field";
-
-	}
 
 }

@@ -7,6 +7,4 @@ interface Repository {
 	function all();
 	function where($qry);
 	function find($id);
-	
-	function add($object);
 }

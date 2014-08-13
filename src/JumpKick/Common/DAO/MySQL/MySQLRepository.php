@@ -30,8 +30,6 @@ abstract class MySQLRepository implements Repository, Identity {
 		}
 		
 		return $returnArray;
-		
-		
 	}
 	
 	function where($qry) {
@@ -61,11 +59,7 @@ abstract class MySQLRepository implements Repository, Identity {
 		
 		return $returnResult;
 	}
-	
-	function add($object) {
-		
-	}
-	
+
 	protected abstract function initRow($row);
 }
 
