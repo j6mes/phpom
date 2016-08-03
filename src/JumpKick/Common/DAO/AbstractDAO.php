@@ -1,6 +1,6 @@
 <?php
 namespace JumpKick\Common\DAO;
-require_once("JumpKick\Common\Autoload.php");
+require_once("JumpKick/Common/Autoload.php");
 
 
 abstract class AbstractDAO implements DAO {

@@ -4,7 +4,7 @@ namespace JumpKick\Common\DAO\MySQL;
 use JumpKick\Common\DAO\AbstractDAO;
 use JumpKick\Common\DAO\Identity;
 
-require_once ("JumpKick\Common\Autoload.php");
+require_once ("JumpKick/Common/Autoload.php");
 
 abstract class MySQLDAO extends AbstractDAO implements Identity {
 
@@ -13,7 +13,6 @@ abstract class MySQLDAO extends AbstractDAO implements Identity {
 	protected $dbh;
 
 	public function __construct($id = null) {
-	
 		if ($id == null) {
 			parent::__construct(false);
 		} else {
@@ -24,6 +23,10 @@ abstract class MySQLDAO extends AbstractDAO implements Identity {
 		}
 
 		$this -> dbh = MySQLDatabaseConnection::getActiveConnection();
+	}
+	
+	function getId() {
+		return $this->id;
 	}
 
 	protected function create() {
@@ -39,8 +42,14 @@ abstract class MySQLDAO extends AbstractDAO implements Identity {
 
 		$statement = $this -> dbh -> prepare($query);
 		$statement -> execute(array_values($this -> data));
-
+	
 		$this->id = $this -> dbh -> lastInsertId();
+
+
+        if(intval($statement->errorCode())>0) {
+			error_log(print_r($statement->errorInfo(),true));
+            throw new \Exception("MySQL Error " . print_r($statement->errorInfo(),true));
+        }
 
 	}
 
@@ -56,6 +65,13 @@ abstract class MySQLDAO extends AbstractDAO implements Identity {
 		$vals = array_merge(array_values($this -> data), array($this -> id));
 
 		$statement -> execute($vals);
+
+
+		if(intval($statement->errorCode())>0) {
+			error_log(print_r($statement->errorInfo(),true));
+			throw new \Exception("MySQL Error " . print_r($statement->errorInfo(),true));
+		}
+
 	}
 
 	protected function delete() {

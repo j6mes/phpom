@@ -1,7 +1,7 @@
 <?php
 
 namespace JumpKick\Common\DAO\MySQL;
-require_once ("JumpKick\Common\Autoload.php");
+require_once ("JumpKick/Common/Autoload.php");
 
 
 class SimpleRepository extends MySQLRepository {
