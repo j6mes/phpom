@@ -82,7 +82,27 @@ abstract class MySQLRepository implements Repository, Identity {
 		
 		return $returnArray;
 	}
-	
+
+	function count($qry,$params) {
+		$jtext = "";
+		if(count($this->joins)>0) {
+			foreach($this->joins as $join) {
+				$jtext .= "{$join[0]} JOIN {$join[1]} ON {$join[2]} = {$join[3]} ";
+			}
+
+		}
+
+		$query = "SELECT COUNT(*) FROM `{$this->getTableName()}` {$jtext} WHERE {$qry};";
+		$smt = $this->dbh->prepare($query);
+		$smt->execute($params);
+
+
+		$result = $smt->fetchColumn(0);
+
+		return $result;
+	}
+
+
 	function find($id) {
 		$jtext = "";
 		if(count($this->joins)>0) {
@@ -97,11 +117,11 @@ abstract class MySQLRepository implements Repository, Identity {
 		$smt = $this->dbh->prepare($query);
 
         $smt->execute(array($id));
-		
+
 		$result = $smt->fetch(PDO::FETCH_ASSOC);
 
-		$returnResult = $this->initRow($result);	
-		
+		$returnResult = $this->initRow($result);
+
 		return $returnResult;
 	}
 
